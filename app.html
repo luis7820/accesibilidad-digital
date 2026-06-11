@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="AccesoUniversal — Herramientas de accesibilidad digital adaptadas a tu perfil.">
+    <title>AccesoUniversal — Herramientas de Accesibilidad</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Nunito:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/modos.css">
+</head>
+
+<body>
+
+    <svg style="display:none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="ico-logo" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="16" fill="#4f46e5" />
+            <path d="M16 8a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm-6 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#fff"
+                stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="10" cy="14" r="1.5" fill="#a5b4fc" />
+            <circle cx="22" cy="14" r="1.5" fill="#a5b4fc" />
+        </symbol>
+        <symbol id="ico-eye" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+        </symbol>
+        <symbol id="ico-hand" viewBox="0 0 24 24">
+            <path
+                d="M18 11V6a2 2 0 0 0-4 0v1M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
+        </symbol>
+        <symbol id="ico-person" viewBox="0 0 24 24">
+            <circle cx="12" cy="4" r="2" />
+            <path d="M12 6v7M9 10h6M12 13l-3 7M12 13l3 7" />
+        </symbol>
+        <symbol id="ico-book" viewBox="0 0 24 24">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </symbol>
+        <symbol id="ico-mic" viewBox="0 0 24 24">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        </symbol>
+        <symbol id="ico-speaker" viewBox="0 0 24 24">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+        </symbol>
+        <symbol id="ico-magnify" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="11" y1="8" x2="11" y2="14" />
+            <line x1="8" y1="11" x2="14" y2="11" />
+        </symbol>
+    </svg>
+
+    <div id="aria-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <nav class="navbar" aria-label="Barra de accesibilidad">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand" aria-label="AccesoUniversal - Inicio">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 32 32">
+                    <use href="#ico-logo" />
+                </svg>
+                <span>AccesoUniversal</span>
+            </a>
+            <div class="nav-tools">
+                <button id="theme-btn" class="ntool-btn" onclick="cambiarModoOscuro()" aria-label="Modo oscuro (Alt+D)">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                    Oscuro
+                </button>
+                <button class="ntool-btn" onclick="cambiarTamanoLetra(2)" aria-label="Aumentar letra">A+</button>
+                <button class="ntool-btn" onclick="cambiarTamanoLetra(-2)" aria-label="Reducir letra">A−</button>
+                <button class="ntool-btn" onclick="restablecerLetra()" aria-label="Restablecer letra">A↺</button>
+                <button class="ntool-btn contrast-btn" id="btn-contraste" onclick="activarAltoContraste()"
+                    aria-label="Alto contraste (Alt+3)" aria-pressed="false">Contraste</button>
+                <button id="voice-btn" class="ntool-btn voice-btn" onclick="iniciarVoz()"
+                    aria-label="Comando de voz (Alt+V)">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <use href="#ico-mic" />
+                    </svg>
+                    <span id="voice-status">Voz</span>
+                </button>
+                <button class="ntool-btn stop-btn" onclick="pararAudio()"
+                    aria-label="Parar audio (Escape)">Parar</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-inner">
+            <div class="hero-eyebrow">Accesibilidad Digital · WCAG 2.2</div>
+            <h1 class="hero-title">La web para <em>todas</em> las personas,<br>sin excepción</h1>
+            <p class="hero-sub">Elige tu perfil y la página se adapta con las herramientas que necesitas.</p>
+            <div class="hero-pills">
+                <button type="button" class="hero-pill pill-v" onclick="seleccionarPerfil('visual')">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <use href="#ico-eye" />
+                    </svg>
+                    Baja visión
+                </button>
+                <button type="button" class="hero-pill pill-a" onclick="seleccionarPerfil('auditiva')">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <use href="#ico-hand" />
+                    </svg>
+                    Dif. auditiva
+                </button>
+                <button type="button" class="hero-pill pill-m" onclick="seleccionarPerfil('motora')">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <use href="#ico-person" />
+                    </svg>
+                    Movilidad reducida
+                </button>
+                <button type="button" class="hero-pill pill-c" onclick="seleccionarPerfil('cognitiva')">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <use href="#ico-book" />
+                    </svg>
+                    Cognitiva
+                </button>
+            </div>
+        </div>
+        <div class="hero-deco" aria-hidden="true">
+            <div class="deco-ring deco-r1"></div>
+            <div class="deco-ring deco-r2"></div>
+            <div class="deco-ring deco-r3"></div>
+        </div>
+    </header>
+
+    <main id="main-content">
+
+        <section class="sec-profiles" aria-labelledby="titulo-perfil">
+            <div class="sec-header">
+                <h2 id="titulo-perfil">¿Cómo puedo ayudarte?</h2>
+                <p>Selecciona tu perfil y la página activará las herramientas adecuadas para ti.</p>
+            </div>
+            <div class="profile-grid">
+
+                <button type="button" class="pcard pcard-v" id="profile-visual" onclick="seleccionarPerfil('visual')"
+                    aria-pressed="false">
+                    <div class="pcard-top">
+                        <div class="pcard-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <use href="#ico-eye" />
+                            </svg></div>
+                        <span class="pcard-tag">Visual</span>
+                    </div>
+                    <strong class="pcard-title">Baja visión</strong>
+                    <p class="pcard-desc">Lector de voz, alto contraste, ajuste de tamaño de texto y compatibilidad con
+                        lectores de pantalla.</p>
+                    <span class="pcard-cta">Activar perfil →</span>
+                </button>
+
+                <button type="button" class="pcard pcard-a" id="profile-auditiva"
+                    onclick="seleccionarPerfil('auditiva')" aria-pressed="false">
+                    <div class="pcard-top">
+                        <div class="pcard-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <use href="#ico-hand" />
+                            </svg></div>
+                        <span class="pcard-tag">Auditivo</span>
+                    </div>
+                    <strong class="pcard-title">Dificultad auditiva</strong>
+                    <p class="pcard-desc">Alertas visuales, detector de vídeos sin subtítulos y verificación de
+                        contenido sin audio.</p>
+                    <span class="pcard-cta">Activar perfil →</span>
+                </button>
+
+                <button type="button" class="pcard pcard-m" id="profile-motora" onclick="seleccionarPerfil('motora')"
+                    aria-pressed="false">
+                    <div class="pcard-top">
+                        <div class="pcard-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <use href="#ico-person" />
+                            </svg></div>
+                        <span class="pcard-tag">Motor</span>
+                    </div>
+                    <strong class="pcard-title">Movilidad reducida</strong>
+                    <p class="pcard-desc">Botones grandes, control por voz, atajos de teclado y acciones rápidas de un
+                        clic.</p>
+                    <span class="pcard-cta">Activar perfil →</span>
+                </button>
+
+                <button type="button" class="pcard pcard-c" id="profile-cognitiva"
+                    onclick="seleccionarPerfil('cognitiva')" aria-pressed="false">
+                    <div class="pcard-top">
+                        <div class="pcard-icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <use href="#ico-book" />
+                            </svg></div>
+                        <span class="pcard-tag">Cognitivo</span>
+                    </div>
+                    <strong class="pcard-title">Dislexia o dificultad cognitiva</strong>
+                    <p class="pcard-desc">Regla de lectura, fuente para dislexia, espaciado ajustable y filtros de
+                        color.</p>
+                    <span class="pcard-cta">Activar perfil →</span>
+                </button>
+
+            </div>
+        </section>
+
+
+        <section id="panel-visual" class="profile-panel" aria-labelledby="titulo-panel-visual" hidden>
+            <div class="panel-banner banner-v">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <use href="#ico-eye" />
+                </svg>
+                <div><strong>Perfil activado: Baja visión</strong><span>Alto contraste y lector de voz activados</span>
+                </div>
+                <button type="button" class="panel-back" onclick="volverPerfiles()">Cambiar perfil</button>
+            </div>
+            <h2 id="titulo-panel-visual" class="panel-title">Tus herramientas</h2>
+            <div class="tools-grid">
+
+                <div class="tool-card tc-v">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-v"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <use href="#ico-speaker" />
+                            </svg></div>
+                        <div>
+                            <h3>Lector de texto en voz alta</h3>
+                            <p class="tc-desc">Pega cualquier texto y escúchalo. Ajusta la velocidad con el deslizador.
+                            </p>
+                        </div>
+                    </div>
+                    <textarea id="tts-input" class="tts-area" rows="4"
+                        placeholder="Pega aquí el texto que quieres escuchar…"
+                        aria-label="Texto para leer en voz alta"></textarea>
+                    <div class="tc-controls">
+                        <label for="tts-speed" class="tc-label">Velocidad: <strong id="speed-val">1.0x</strong></label>
+                        <input type="range" id="tts-speed" class="tc-range" min="0.5" max="2" step="0.1" value="1"
+                            aria-label="Velocidad de lectura">
+                        <div class="tc-btns">
+                            <button type="button" class="tbtn tbtn-v"
+                                onclick="leerTextoPersonalizado()">Escuchar</button>
+                            <button type="button" class="tbtn tbtn-ghost" onclick="pararAudio()">Parar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card tc-v">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-v">
+                            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3" />
+                                <path
+                                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3>Ajustes de visión</h3>
+                            <p class="tc-desc">Contraste, modo de color y tamaño de texto.</p>
+                        </div>
+                    </div>
+                    <div class="toggle-grid">
+                        <button type="button" class="tgl-btn" onclick="activarAltoContraste()">Alto contraste</button>
+                        <button type="button" class="tgl-btn" onclick="cambiarModoOscuro()">Modo oscuro</button>
+                        <button type="button" class="tgl-btn" onclick="cambiarTamanoLetra(4)">A+ Más grande</button>
+                        <button type="button" class="tgl-btn" onclick="cambiarTamanoLetra(-4)">A− Más pequeño</button>
+                        <button type="button" class="tgl-btn" onclick="restablecerLetra()">A↺ Restablecer</button>
+                    </div>
+                </div>
+
+                <div class="tool-card tc-v full-width">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-v"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <path d="M3 9h18M9 21V9" />
+                            </svg></div>
+                        <div>
+                            <h3>Compatibilidad con lectores de pantalla</h3>
+                            <p class="tc-desc">Toda la navegación es posible solo con el teclado.</p>
+                        </div>
+                    </div>
+                    <div class="toggle-grid mb-4">
+                        <span class="tgl-btn tgl-static">NVDA (Windows)</span>
+                        <span class="tgl-btn tgl-static">JAWS (Windows)</span>
+                        <span class="tgl-btn tgl-static">VoiceOver (Mac/iOS)</span>
+                        <span class="tgl-btn tgl-static">TalkBack (Android)</span>
+                    </div>
+                    <p class="hint-text">Usa <kbd>Tab</kbd> para moverte,
+                        <kbd>Enter</kbd> para activar y <kbd>Alt+1</kbd> para leer la página.</p>
+                    <div class="tc-btns">
+                        <button type="button" class="tbtn tbtn-v" onclick="leerPagina()">Leer página completa</button>
+                        <button type="button" class="tbtn tbtn-ghost" onclick="pararAudio()">Parar</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <section id="panel-auditiva" class="profile-panel" aria-labelledby="titulo-panel-auditiva" hidden>
+            <div class="panel-banner banner-a">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <use href="#ico-hand" />
+                </svg>
+                <div><strong>Perfil activado: Dificultad auditiva</strong><span>Las notificaciones se muestran de forma
+                        visual</span></div>
+                <button type="button" class="panel-back" onclick="volverPerfiles()">Cambiar perfil</button>
+            </div>
+            <h2 id="titulo-panel-auditiva" class="panel-title">Tus herramientas</h2>
+            <div class="tools-grid">
+
+                <div class="tool-card tc-a full-width">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-a"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                            </svg></div>
+                        <div>
+                            <h3>Alertas visuales</h3>
+                            <p class="tc-desc">Las notificaciones no dependen del sonido. Pulsa para ver cada tipo de
+                                alerta visual.</p>
+                        </div>
+                    </div>
+                    <div id="va-notif-area" class="va-notif-area" aria-live="polite"></div>
+                    <div class="va-trigger-grid">
+                        <button type="button" class="va-trigger va-t-error" onclick="mostrarAlertaVisual('error')">✕
+                            Error del sistema</button>
+                        <button type="button" class="va-trigger va-t-msg" onclick="mostrarAlertaVisual('mensaje')">✉
+                            Mensaje nuevo</button>
+                        <button type="button" class="va-trigger va-t-success" onclick="mostrarAlertaVisual('exito')">✓
+                            Acción completada</button>
+                        <button type="button" class="va-trigger va-t-warn" onclick="mostrarAlertaVisual('aviso')">⚠
+                            Aviso importante</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <section id="panel-motora" class="profile-panel" aria-labelledby="titulo-panel-motora" hidden>
+            <div class="panel-banner banner-m">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <use href="#ico-person" />
+                </svg>
+                <div><strong>Perfil activado: Movilidad reducida</strong><span>Botones grandes activados — navega con
+                        teclado o voz</span></div>
+                <button type="button" class="panel-back" onclick="volverPerfiles()">Cambiar perfil</button>
+            </div>
+            <h2 id="titulo-panel-motora" class="panel-title">Tus herramientas</h2>
+            <div class="tools-grid">
+
+                <div class="tool-card tc-m">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-m"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path
+                                    d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12" />
+                            </svg></div>
+                        <div>
+                            <h3>Atajos de teclado</h3>
+                            <p class="tc-desc">Controla toda la página solo con el teclado, sin necesitar el ratón.</p>
+                        </div>
+                    </div>
+                    <div id="shortcuts-grid" class="shortcuts-grid" role="list" aria-label="Atajos disponibles"></div>
+                </div>
+
+                <div class="tool-card tc-m">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-m"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <use href="#ico-mic" />
+                            </svg></div>
+                        <div>
+                            <h3>Control por voz</h3>
+                            <p class="tc-desc">Di un comando y la página responde. Sin mover las manos.</p>
+                        </div>
+                    </div>
+                    <div class="tc-btns mb-4">
+                        <button type="button" class="tbtn tbtn-m" onclick="iniciarVoz()">Activar voz</button>
+                        <button type="button" class="tbtn tbtn-ghost" onclick="pararAudio()">Parar</button>
+                    </div>
+                    <div id="commands-list" class="commands-list" role="list" aria-label="Comandos disponibles"></div>
+                </div>
+
+                <div class="tool-card tc-m full-width">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-m"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="3" />
+                                <line x1="12" y1="8" x2="12" y2="16" />
+                                <line x1="8" y1="12" x2="16" y2="12" />
+                            </svg></div>
+                        <div>
+                            <h3>Acciones rápidas — botones grandes</h3>
+                            <p class="tc-desc">Diseñados para poca precisión. Un solo toque para las acciones más
+                                frecuentes.</p>
+                        </div>
+                    </div>
+                    <div class="bigaction-grid">
+                        <button type="button" class="bigaction-btn"
+                            onclick="window.scrollTo({top:0,behavior:'smooth'})">
+                            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="19" x2="12" y2="5" />
+                                <polyline points="5 12 12 5 19 12" />
+                            </svg>
+                            Ir arriba
+                        </button>
+                        <button type="button" class="bigaction-btn" onclick="leerPagina()">
+                            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <use href="#ico-speaker" />
+                            </svg>
+                            Leer página
+                        </button>
+                        <button type="button" class="bigaction-btn"
+                            onclick="cambiarTamanoLetra(6); mostrarMensaje('Texto grande')">
+                            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <use href="#ico-magnify" />
+                            </svg>
+                            Texto grande
+                        </button>
+                        <button type="button" class="bigaction-btn"
+                            onclick="pararAudio(); mostrarMensaje('Audio parado')">
+                            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="4" width="4" height="16" />
+                                <rect x="14" y="4" width="4" height="16" />
+                            </svg>
+                            Parar audio
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <section id="panel-cognitiva" class="profile-panel" aria-labelledby="titulo-panel-cognitiva" hidden>
+            <div class="panel-banner banner-c">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <use href="#ico-book" />
+                </svg>
+                <div><strong>Perfil activado: Dislexia / Cognitiva</strong><span>Lectura fácil y regla de lectura
+                        activadas</span></div>
+                <button type="button" class="panel-back" onclick="volverPerfiles()">Cambiar perfil</button>
+            </div>
+            <h2 id="titulo-panel-cognitiva" class="panel-title">Tus herramientas</h2>
+            <div class="tools-grid">
+
+                <div class="tool-card tc-c">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-c"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="3" y1="12" x2="21" y2="12" />
+                                <line x1="3" y1="6" x2="21" y2="6" />
+                                <line x1="3" y1="18" x2="21" y2="18" />
+                            </svg></div>
+                        <div>
+                            <h3>Regla de lectura</h3>
+                            <p class="tc-desc">Una línea amarilla que sigue al ratón para no perder el renglón. Muy útil
+                                en dislexia y TDAH.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="tbtn tbtn-c" id="vcbtn-ruler" onclick="activarReglaLectura()"
+                        aria-pressed="false">Activar regla de lectura</button>
+                </div>
+
+                <div class="tool-card tc-c">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-c"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="4 7 4 4 20 4 20 7" />
+                                <line x1="9" y1="20" x2="15" y2="20" />
+                                <line x1="12" y1="4" x2="12" y2="20" />
+                            </svg></div>
+                        <div>
+                            <h3>Fuente y espaciado para dislexia</h3>
+                            <p class="tc-desc">Tipografía más legible y control del espaciado entre palabras y líneas.
+                            </p>
+                        </div>
+                    </div>
+                    <button type="button" class="tbtn tbtn-c mb-4" id="vcbtn-dyslexia" onclick="activarFuenteDislexia()"
+                        aria-pressed="false">Fuente para dislexia</button>
+                    <div class="tc-controls">
+                        <label for="spacing-range" class="tc-label">Espaciado: <strong
+                                id="spacing-val">Normal</strong></label>
+                        <input type="range" id="spacing-range" class="tc-range" min="0" max="3" step="1" value="0"
+                            oninput="aplicarEspaciado(this.value)" aria-label="Nivel de espaciado">
+                    </div>
+                    <p id="spacing-preview" class="spacing-preview" aria-live="polite"></p>
+                </div>
+
+                <div class="tool-card tc-c full-width">
+                    <div class="tc-header">
+                        <div class="tc-icon icon-c"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="13.5" cy="6.5" r="2.5" />
+                                <circle cx="19" cy="13" r="2.5" />
+                                <circle cx="6.5" cy="13" r="2.5" />
+                                <circle cx="10" cy="19.5" r="2.5" />
+                            </svg></div>
+                        <div>
+                            <h3>Filtro de color de fondo</h3>
+                            <p class="tc-desc">Un tono de fondo suave reduce la fatiga visual. Muy usado por personas
+                                con dislexia y sensibilidad a la luz.</p>
+                        </div>
+                    </div>
+                    <div class="color-swatch-grid">
+                        <button type="button" class="color-swatch" data-color="#fef9c3"
+                            style="background:#fef9c3;color:#713f12" onclick="aplicarFiltroColor('#fef9c3')"
+                            aria-label="Fondo amarillo">Amarillo</button>
+                        <button type="button" class="color-swatch" data-color="#dcfce7"
+                            style="background:#dcfce7;color:#14532d" onclick="aplicarFiltroColor('#dcfce7')"
+                            aria-label="Fondo verde">Verde</button>
+                        <button type="button" class="color-swatch" data-color="#dbeafe"
+                            style="background:#dbeafe;color:#1e3a8a" onclick="aplicarFiltroColor('#dbeafe')"
+                            aria-label="Fondo azul">Azul</button>
+                        <button type="button" class="color-swatch" data-color="#fce7f3"
+                            style="background:#fce7f3;color:#831843" onclick="aplicarFiltroColor('#fce7f3')"
+                            aria-label="Fondo rosa">Rosa</button>
+                        <button type="button" class="color-swatch" data-color="#f3e8ff"
+                            style="background:#f3e8ff;color:#4a044e" onclick="aplicarFiltroColor('#f3e8ff')"
+                            aria-label="Fondo lila">Lila</button>
+                        <button type="button" class="color-swatch" data-color="none"
+                            style="background:#f1f5f9;color:#334155" onclick="aplicarFiltroColor('none')"
+                            aria-label="Sin filtro">Sin filtro</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="floating-dock" aria-label="Accesos rápidos">
+        <button type="button" class="dock-btn" onclick="leerPagina()" aria-label="Leer página (Alt+1)">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <use href="#ico-speaker" />
+            </svg>
+            <span>Leer</span><span class="dock-shortcut">Alt+1</span>
+            <span class="dock-tooltip" role="tooltip">Leer el contenido de la página</span>
+        </button>
+        <button type="button" class="dock-btn" id="btn-contraste" onclick="activarAltoContraste()"
+            aria-label="Alto contraste (Alt+3)" aria-pressed="false">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor" />
+            </svg>
+            <span>Contraste</span><span class="dock-shortcut">Alt+3</span>
+            <span class="dock-tooltip" role="tooltip">Activar / desactivar alto contraste</span>
+        </button>
+        <button type="button" class="dock-btn" onclick="cambiarTamanoLetra(4); mostrarMensaje('Texto ampliado')"
+            aria-label="Ampliar texto (Alt+4)">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <use href="#ico-magnify" />
+            </svg>
+            <span>Ampliar</span><span class="dock-shortcut">Alt+4</span>
+            <span class="dock-tooltip" role="tooltip">Aumentar el tamaño de la letra</span>
+        </button>
+        <button type="button" class="dock-btn" id="btn-facil" onclick="activarLecturaFacil()"
+            aria-label="Lectura fácil (Alt+5)" aria-pressed="false">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="15" y2="12" />
+                <line x1="3" y1="18" x2="18" y2="18" />
+            </svg>
+            <span>Fácil</span><span class="dock-shortcut">Alt+5</span>
+            <span class="dock-tooltip" role="tooltip">Activar modo lectura fácil</span>
+        </button>
+    </nav>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <strong>AccesoUniversal</strong>
+                <span>Proyecto intermodular · 2SMR · Academia Crespo</span>
+            </div>
+            <div class="footer-badges">
+                <span class="fbadge">WCAG 2.2 AA</span>
+                <span class="fbadge">ARIA 1.2</span>
+                <span class="fbadge">Compatible NVDA · JAWS · VoiceOver</span>
+            </div>
+            <p class="footer-note">Todos los ajustes se guardan en tu dispositivo. No se envían datos a ningún servidor.
+            </p>
+        </div>
+    </footer>
+
+    <div id="reading-ruler" aria-hidden="true"></div>
+    <script src="js/datos.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

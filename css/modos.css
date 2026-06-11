@@ -1,0 +1,44 @@
+/* AccesoUniversal - Modo oscuro, alto contraste y accesibilidad */
+
+/* Modo oscuro */
+body.dark-mode { background:#0b0f1a; color:#f1f5f9; }
+body.dark-mode .navbar         { background:rgba(11,15,26,.95); }
+body.dark-mode .hero           { background:linear-gradient(135deg,#09090f,#0f172a 50%,#1a1060); }
+body.dark-mode .pcard,
+body.dark-mode .tool-card      { background:#141c2e; border-color:#1e2d45; }
+body.dark-mode .floating-dock  { background:rgba(20,28,46,.95); border-color:#1e2d45; }
+body.dark-mode .dock-btn       { color:#94a3b8; }
+body.dark-mode .dock-btn:hover { background:rgba(30,58,138,.2); color:#93c5fd; }
+body.dark-mode .ntool-btn       { background:#1e2d45; color:#94a3b8; }
+body.dark-mode .ntool-btn:hover { background:#263550; color:#e2e8f0; }
+body.dark-mode .tgl-btn,
+body.dark-mode .shortcut-item,
+body.dark-mode .command-tag    { background:#0f1929; border-color:#1e2d45; }
+body.dark-mode .tgl-btn        { color:#94a3b8; }
+body.dark-mode .tts-area       { background:#0f1929; color:#f1f5f9; border-color:#1e2d45; }
+body.dark-mode .bigaction-btn  { background:#1e2d45; border-color:#263550; color:#e2e8f0; }
+body.dark-mode .spacing-preview { background:#0f1929; color:#f1f5f9; border-color:#1e2d45; }
+body.dark-mode kbd             { background:#1e2d45; color:#f1f5f9; }
+body.dark-mode #toast          { background:#141c2e; color:#f1f5f9; }
+body.dark-mode .va-notif       { background:#1e293b; }
+body.dark-mode .va-notif-title { color:#f1f5f9; }
+
+/* Alto contraste */
+body.high-contrast,
+body.high-contrast *      { background:#000!important; color:#ff0!important; border-color:#ff0!important; outline-color:#ff0!important; }
+body.high-contrast a      { color:#0ff!important; }
+body.high-contrast button { background:#000!important; color:#ff0!important; border:2px solid #ff0!important; }
+
+/* Modos de accesibilidad */
+body.easy-read .tool-card p,
+body.easy-read .tool-card li,
+body.easy-read .tool-card label { font-family:Arial,sans-serif!important; font-size:1.15rem!important; line-height:2!important; }
+body.easy-read .tool-card p,
+body.easy-read .tool-card li    { max-width:65ch!important; }
+body.large-targets button,
+body.large-targets a,
+body.large-targets input        { min-height:56px!important; min-width:56px!important; font-size:1.1rem!important; }
+body.dyslexia-font,
+body.dyslexia-font *  { font-family:Arial,sans-serif!important; letter-spacing:.08em!important; word-spacing:.2em!important; }
+body.dyslexia-font p,
+body.dyslexia-font li { line-height:2.2!important; }
